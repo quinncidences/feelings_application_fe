@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link, NavLink} from 'react-router-dom';
-import { withRouter } from "react-router";
+import { BrowserRouter as Router, Route} from 'react-router-dom';
 
 import Home from './containers/Home'
 import Login from './components/Login'
 import NewAccount from './components/NewAccount'
-import NewPost from './components/NewPost'
-import Post from './components/Post'
 import Main from './containers/Main'
 
 function App() {

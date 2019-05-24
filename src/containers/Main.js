@@ -2,21 +2,30 @@ import React from 'react';
 import NewPost from '../components/NewPost'
 import Post from '../components/Post'
 
+const POSTS = 'http://localhost:3000/posts'
+
 class Main extends React.Component {
 
   constructor() {
     super()
     this.state = {
-      posts: []
+      posts: null
     }
-    this.getPosts()
+    this.fetchPosts = this.fetchPosts.bind(this)
+    this.addFeeling = this.addFeeling.bind(this)
   }
 
-  getPosts() {
-    fetch('http://localhost:3000/posts')
+  componentWillMount() {
+    this.fetchPosts();
+  }
+
+  fetchPosts() {
+    fetch(POSTS)
     .then(res => res.json())
     .then(posts => {
-      this.setState ({posts: posts})
+      this.setState ({
+        posts: posts
+      })
     })
   }
 
@@ -25,15 +34,18 @@ class Main extends React.Component {
   }
 
   render() {
-    console.log("sent from Main: ", this.state.posts)
-  return (
-    <div>
-      <div id="add-post-button">
-        <button type="button" onClick={() => this.addFeeling()}>Add Your Feelings</button>
+    if (!this.state.posts) {
+      return <div />
+    }
+    return (
+      <div>
+        <div id="add-post-button">
+          <button type="button" onClick={() => this.addFeeling()}>Add Your Feelings</button>
+        </div>
+        <Post posts={this.state.posts} />
       </div>
-      <Post posts={this.state.posts} />
-    </div>
-  )}
+    )
+  }
 }
 
 export default Main;
