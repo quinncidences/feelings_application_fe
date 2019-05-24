@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './FF-Logo-schwarz-weiss-oT_500x500.png';
 import './App.css';
 
 function App() {
