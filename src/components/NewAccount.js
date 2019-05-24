@@ -10,10 +10,34 @@ class NewAccount extends React.Component {
     }
   }
 
+  newUserSubmit(ev) {
+    ev.preventDefault()
+
+    fetch('http://localhost:3000/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      user: {
+        first_name: ev.target.elements.firstname.value,
+        last_name: ev.target.elements.lastname.value,
+        username: ev.target.elements.username.value,
+        course: ev.target.elements.coursedropdown.value,
+        city: ev.target.elements.citydropdown.value,
+        password: ev.target.elements.password.value
+      }
+    })
+  })
+    .then(r => r.json())
+    .then(console.log("CREATED"))
+  }
+
   render() {
   return (
     <div>
-      <form>
+      <form onSubmit={(ev) => this.newUserSubmit(ev)}>
         <div>
           <input type="text" name="firstname" placeholder="First Name" />
         </div>
@@ -21,16 +45,19 @@ class NewAccount extends React.Component {
           <input type="text" name="lastname" placeholder="Last Name" />
         </div>
         <div>
+          <input type="text" name="username" placeholder="Username" />
+        </div>
+        <div>
           Select your city:<select name="citydropdown">
           {this.state.cities.map(city => {
-            return <option key={city} value={city}>{city}</option>
+            return <option key={city} name="city" value={city}>{city}</option>
           })}
           </select>
         </div>
         <div>
           Select your course:<select name="coursedropdown">
           {this.state.courses.map(course => {
-            return <option key={course} value={course}>{course}</option>
+            return <option key={course} name="course" value={course}>{course}</option>
           })}
           </select>
         </div>
@@ -38,7 +65,7 @@ class NewAccount extends React.Component {
           <input type="text" name="password" placeholder="Create Password" />
         </div>
         <div>
-          <input type="text" name="confirmpassword" placeholder="Confirm Password" />
+          <input type="text" name="password_confirmation" placeholder="Confirm Password" />
         </div>
 
         <input type="submit" value="Create Account" />
