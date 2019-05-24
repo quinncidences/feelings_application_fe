@@ -6,6 +6,8 @@ import { withRouter } from "react-router";
 import Home from './containers/Home'
 import Login from './components/Login'
 import NewAccount from './components/NewAccount'
+import NewPost from './components/NewPost'
+import Post from './components/Post'
 
 function App() {
   return (
@@ -16,6 +18,9 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/newaccount" component={NewAccount} />
+          {/* I want this to show up without the HOME content */}
+          <Route path="/newpost" component={NewPost} />
+          <Route path="/posts" component={Post} />
         </Router>
       </header>
     </div>
