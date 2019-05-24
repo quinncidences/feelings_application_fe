@@ -12,14 +12,15 @@ class Post extends React.Component {
       Accept: 'application/json'
     },
     body: JSON.stringify({
-      user: {
+      post: {
         "user_id": 1,
-        "password": ev.target.elements.content.value
+        //Will be targeted to find the user id of whoever is logged in
+        "content": ev.target.elements.content.value
       }
     })
   })
     .then(r => r.json())
-    .then(console.log("CREATED"))
+    .then(r => console.log("CREATED POST"))
   }
 
 

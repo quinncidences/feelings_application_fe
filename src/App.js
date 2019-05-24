@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './containers/Home'
 import Login from './components/Login'
 import NewAccount from './components/NewAccount'
+import NewPost from './components/NewPost'
 import Main from './containers/Main'
 
 function App() {
@@ -18,8 +19,8 @@ function App() {
           <Route exact path="/newaccount" component={NewAccount} />
           {/* I want this to show up without the HOME content */}
           <Route exact path="/main" component={Main} />
-          {/*<Route exact path="/newpost" component={NewPost} />
-        <Route exact path="/posts" component={Post} /> */}
+          <Route exact path="/newpost" component={NewPost} />
+          {/*<Route exact path="/posts" component={Post} /> */}
         </Router>
       </header>
     </div>

@@ -11,6 +11,7 @@ class NewAccount extends React.Component {
   }
 
   newUserSubmit(ev) {
+    console.log("pw:", ev.target.elements.password.value)
     ev.preventDefault()
 
     fetch('http://localhost:3000/users', {
@@ -31,12 +32,12 @@ class NewAccount extends React.Component {
     })
   })
     .then(r => r.json())
-    .then(console.log("CREATED"))
+    .then(r => console.log(r))
   }
 
   render() {
   return (
-    <div>
+    <div className="account-container">
       <form onSubmit={(ev) => this.newUserSubmit(ev)}>
         <div>
           <input type="text" name="firstname" placeholder="First Name" />

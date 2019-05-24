@@ -1,5 +1,4 @@
 import React from 'react';
-import NewPost from '../components/NewPost'
 import Post from '../components/Post'
 
 const POSTS = 'http://localhost:3000/posts'
