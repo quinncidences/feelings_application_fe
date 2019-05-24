@@ -1,22 +1,17 @@
 import React from 'react';
 
-class Login extends React.Component {
+class Post extends React.Component {
   render() {
   return (
-    <div>
+    <div className="post-container">
       <form>
         <div>
-          <input type="text" name="username" placeholder="Username" />
-          <label htmlFor="username">Username</label>
+          <textarea name="content" rows="20" cols="50" placeholder="Enter feelings here..."></textarea>
         </div>
-        <div>
-          <input type="password" name="password" placeholder="Password" />
-          <label htmlFor="password">Password</label>
-        </div>
-        <input type="submit" value="Login" />
+        <input type="submit" value="Add Feeling" />
       </form>
     </div>
   )}
 }
 
-export default Login;
+export default Post;

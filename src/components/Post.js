@@ -3,7 +3,7 @@ import React from 'react';
 class Post extends React.Component {
   render() {
   return (
-    <div>
+    <div className="post-container">
       <p>POST AUTHOR</p>
       <p>POST CONTENT</p>
       <p>POST TIMESTAMP</p>
