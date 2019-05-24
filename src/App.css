@@ -17,3 +17,18 @@
   max-width:32px;
   max-height:32px;
 }
+#add-post-button {
+  text-align: center;
+  margin: auto;
+  padding: 10px;
+}
+
+#back-post {
+  text-align: left;
+  margin-left: 35px;
+}
+
+#next-post {
+  text-align: right;
+  margin-right: 35px;
+}

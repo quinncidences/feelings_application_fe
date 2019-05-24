@@ -8,6 +8,7 @@ import Login from './components/Login'
 import NewAccount from './components/NewAccount'
 import NewPost from './components/NewPost'
 import Post from './components/Post'
+import Main from './containers/Main'
 
 function App() {
   return (
@@ -16,11 +17,12 @@ function App() {
         <p>HOME PAGE</p>
         <Router>
           <Route exact path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/newaccount" component={NewAccount} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/newaccount" component={NewAccount} />
           {/* I want this to show up without the HOME content */}
-          <Route path="/newpost" component={NewPost} />
-          <Route path="/posts" component={Post} />
+          <Route exact path="/main" component={Main} />
+          {/*<Route exact path="/newpost" component={NewPost} />
+        <Route exact path="/posts" component={Post} /> */}
         </Router>
       </header>
     </div>

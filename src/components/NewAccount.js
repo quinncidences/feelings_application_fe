@@ -21,12 +21,12 @@ class NewAccount extends React.Component {
     },
     body: JSON.stringify({
       user: {
-        first_name: ev.target.elements.firstname.value,
-        last_name: ev.target.elements.lastname.value,
-        username: ev.target.elements.username.value,
-        course: ev.target.elements.coursedropdown.value,
-        city: ev.target.elements.citydropdown.value,
-        password: ev.target.elements.password.value
+        "first_name": ev.target.elements.firstname.value,
+        "last_name": ev.target.elements.lastname.value,
+        "username": ev.target.elements.username.value,
+        "course": ev.target.elements.coursedropdown.value,
+        "city": ev.target.elements.citydropdown.value,
+        "password": ev.target.elements.password.value
       }
     })
   })
