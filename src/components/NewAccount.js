@@ -11,7 +11,6 @@ class NewAccount extends React.Component {
   }
 
   newUserSubmit(ev) {
-    console.log("pw:", ev.target.elements.password.value)
     ev.preventDefault()
 
     fetch('http://localhost:3000/users', {

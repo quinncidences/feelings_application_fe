@@ -15,6 +15,7 @@ class Post extends React.Component {
     this.clapClick = this.clapClick.bind(this)
     this.backPost = this.backPost.bind(this)
     this.nextPost = this.nextPost.bind(this)
+    // this.createClap = this.createClap.bind(this)
   }
 
   componentWillMount() {
@@ -28,14 +29,37 @@ class Post extends React.Component {
     this.setState({current_post: current_post})
   }
 
+  // createClap() {
+  //   fetch('http://localhost:3000/claps', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Accept: 'application/json'
+  //   },
+  //   body: JSON.stringify({
+  //     clap: {
+  //       "user_id": 1,
+  //       "post_id": this.state.current_post.id,
+  //     }
+  //   })
+  // })
+  //   .then(r => r.json())
+  //   .then(r => console.log(r))
+  // }
+
   clapClick() {
     let clap = document.getElementById("post-clap")
     if (clap.alt === "Unfilled Clap") {
       clap.src = ClapFilled
       clap.alt = "Filled Clap"
-    } else {
+      console.log("Filled Clap: ", clap.alt)
+      // this.createClap()
+    }
+    // I NEED TO ADD IN THE DESTROY METHOD HERE
+    else {
       clap.src = ClapUnfilled
       clap.alt = "Unfilled Clap"
+      console.log("Unfilled Clap: ", clap.alt)
     }
   }
 
