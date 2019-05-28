@@ -9,7 +9,8 @@ class Post extends React.Component {
     this.state = {
       posts: this.props.posts,
       current_index: this.props.posts.length - 1,
-      current_post: null
+      current_post: null,
+      user: localStorage.getItem("jwt")
     }
     this.getCurrentPost = this.getCurrentPost.bind(this)
     this.clapClick = this.clapClick.bind(this)
@@ -29,23 +30,23 @@ class Post extends React.Component {
     this.setState({current_post: current_post})
   }
 
-  // createClap() {
-  //   fetch('http://localhost:3000/claps', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Accept: 'application/json'
-  //   },
-  //   body: JSON.stringify({
-  //     clap: {
-  //       "user_id": 1,
-  //       "post_id": this.state.current_post.id,
-  //     }
-  //   })
-  // })
-  //   .then(r => r.json())
-  //   .then(r => console.log(r))
-  // }
+  createClap() {
+    fetch('http://localhost:3000/claps', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      clap: {
+        "user_id": this.state.user,
+        "post_id": this.state.current_post.id,
+      }
+    })
+  })
+    .then(r => r.json())
+    .then(r => console.log("CREATED CLAP: ", r))
+  }
 
   clapClick() {
     let clap = document.getElementById("post-clap")
@@ -53,14 +54,14 @@ class Post extends React.Component {
       clap.src = ClapFilled
       clap.alt = "Filled Clap"
       console.log("Filled Clap: ", clap.alt)
-      // this.createClap()
+      this.createClap()
     }
     // I NEED TO ADD IN THE DESTROY METHOD HERE
-    else {
-      clap.src = ClapUnfilled
-      clap.alt = "Unfilled Clap"
-      console.log("Unfilled Clap: ", clap.alt)
-    }
+    // else {
+    //   clap.src = ClapUnfilled
+    //   clap.alt = "Unfilled Clap"
+    //   console.log("Unfilled Clap: ", clap.alt)
+    // }
   }
 
   nextPost() {
@@ -109,14 +110,14 @@ class Post extends React.Component {
           </div>
         </div>
         <div className="post-container">
-          <p>{this.state.current_post.user.first_name} {this.state.current_post.user.first_name}</p>
+          <p>{this.state.current_post.user.first_name} {this.state.current_post.user.last_name}</p>
           <p>{this.state.current_post.user.city}</p>
           <p>{this.state.current_post.user.course}</p>
           <p>{this.state.current_post.content}</p>
           <p>{this.state.current_post.created_at}</p>
         </div>
         <div className="clap-image">
-          <img id="post-clap" src={ClapUnfilled} alt="Unfied Clap" onClick={() => this.clapClick()}/>
+          <img id="post-clap" src={ClapUnfilled} alt="Unfilled Clap" onClick={() => this.clapClick()}/>
         </div>
       </div>
     )

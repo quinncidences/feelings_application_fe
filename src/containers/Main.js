@@ -8,7 +8,8 @@ class Main extends React.Component {
   constructor() {
     super()
     this.state = {
-      posts: null
+      posts: null,
+      user: localStorage.getItem("jwt")
     }
     this.fetchPosts = this.fetchPosts.bind(this)
     this.addFeeling = this.addFeeling.bind(this)
@@ -29,7 +30,7 @@ class Main extends React.Component {
   }
 
   addFeeling() {
-    console.log("Clicked Add Feeling Button")
+    window.location.href = 'http://localhost:3001/newpost'
   }
 
   render() {
@@ -38,6 +39,7 @@ class Main extends React.Component {
     }
     return (
       <div>
+        <p>Current User ID: {this.state.user}</p>
         <div id="add-post-button">
           <button type="button" onClick={() => this.addFeeling()}>Add Your Feelings</button>
         </div>

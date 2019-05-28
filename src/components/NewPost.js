@@ -2,8 +2,17 @@ import React from 'react';
 
 class Post extends React.Component {
 
+  constructor() {
+    super()
+    this.state = {
+      user: localStorage.getItem("jwt")
+    }
+  }
+
   newPostSubmit(ev) {
     ev.preventDefault()
+    let form = document.getElementById("new-post-form")
+
 
     fetch('http://localhost:3000/posts', {
     method: 'POST',
@@ -13,7 +22,7 @@ class Post extends React.Component {
     },
     body: JSON.stringify({
       post: {
-        "user_id": 1,
+        "user_id": this.state.user,
         //Will be targeted to find the user id of whoever is logged in
         "content": ev.target.elements.content.value
       }
@@ -21,15 +30,18 @@ class Post extends React.Component {
   })
     .then(r => r.json())
     .then(r => console.log("CREATED POST"))
+    .then(form.reset())
   }
 
 
 
 
   render() {
+    console.log(this.state.user)
   return (
       <div className="new-post-container">
-        <form onSubmit={(ev) => this.newPostSubmit(ev)}>
+        <p>Current User: {this.state.user}</p>
+        <form id="new-post-form" onSubmit={(ev) => this.newPostSubmit(ev)}>
           <div>
             <textarea name="content" rows="20" cols="50" placeholder="Enter feelings here..."></textarea>
           </div>
