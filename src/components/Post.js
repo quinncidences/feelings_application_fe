@@ -12,13 +12,15 @@ class Post extends React.Component {
       current_post: null,
       user: localStorage.getItem("jwt"),
       clap_status: null,
-      current_claps: {user_id: 5, post_id: 3}
+      current_claps: {}
     }
     this.getCurrentPost = this.getCurrentPost.bind(this)
-    this.clapClick = this.clapClick.bind(this)
+    this.actionClap = this.actionClap.bind(this)
+    this.deleteClap = this.deleteClap.bind(this)
+    this.createClap = this.createClap.bind(this)
     this.backPost = this.backPost.bind(this)
     this.nextPost = this.nextPost.bind(this)
-    // this.createClap = this.createClap.bind(this)
+    // this.actionClap = this.actionClap.bind(this)
   }
 
   componentWillMount() {
@@ -37,22 +39,24 @@ class Post extends React.Component {
   }
 
   getClapStatus() {
-    debugger
-    if (this.state.current_claps.length > 0) {
-      this.state.current_claps.map(clap => {
-        if (clap.user_id === this.state.user) {
-          return this.setState({
-            clap_status: ClapFilled
-          })
+    let clap = document.getElementById("post-clap")
+    let clapKeys = Object.keys(this.state.current_claps).length
+    if (clapKeys > 0) {
+      for (let i = 0; i < clapKeys; i++) {
+        if (this.state.current_claps[i].user_id == this.state.user) {
+          this.setState({clap_status: ClapFilled});
+          // clap.alt = "Filled Clap";
+          break;
+        } else {
+          this.setState({clap_status: ClapUnfilled})
+          // clap.alt = "Unfilled Clap"
         }
-      })
+      }
     } else {
-      this.setState({
-        clap_status: ClapUnfilled
-      })
+      this.setState({clap_status: ClapUnfilled})
+      // clap.alt = "Unfilled Clap"
     }
   }
-
 
   createClap() {
     fetch('http://localhost:3000/claps', {
@@ -72,26 +76,32 @@ class Post extends React.Component {
     .then(r => console.log("CREATED CLAP: ", r))
   }
 
-  // deleteClap() {
+  deleteClap() {
+    console.log("THIS SHOULD DELETE CLAP")
   //   fetch('http://localhost:3000/claps', {
   //   method: 'DELETE'
   // })
   //   .then(r => r.json())
   //   .then(r => console.log("DELETED CLAP: ", r))
-  // }
+  }
 
-  clapClick() {
-    let clap = document.getElementById("post-clap")
-    if (clap.alt === "Unfilled Clap") {
-      clap.src = ClapFilled
-      clap.alt = "Filled Clap"
+  actionClap() {
+    let clapKeys = Object.keys(this.state.current_claps).length
+    if (clapKeys < 0) {
       this.createClap()
+      this.setState({clap_status: ClapFilled})
+    } else {
+      for (let i = 0; i < clapKeys; i++) {
+        if (this.state.current_claps[i].user_id == this.state.user) {
+          this.deleteClap()
+          this.setState({clap_status: ClapUnfilled})
+          break;
+        } else {
+          this.createClap()
+          this.setState({clap_status: ClapFilled})
+        }
+      }
     }
-    // else {
-    //   clap.src = ClapUnfilled
-    //   clap.alt = "Unfilled Clap"
-    //   this.deleteClap()
-    // }
   }
 
   nextPost() {
@@ -113,6 +123,7 @@ class Post extends React.Component {
       this.getClapStatus()
     }
   }
+
   backPost() {
     if (this.state.current_index === this.state.posts.length - 1) {
       let newIndex = 0
@@ -154,8 +165,8 @@ class Post extends React.Component {
           <p>{this.state.current_post.content}</p>
           <p>{this.state.current_post.created_at}</p>
         </div>
-        <div className="clap-image">
-          <img id="post-clap" src={this.state.clap_status} alt="Unfilled Clap" onClick={() => this.clapClick()}/>
+        <div className="clap">
+          <img id="post-clap" src={this.state.clap_status} alt="Unfilled Clap" onClick={() => this.actionClap()}/>
         </div>
       </div>
     )
