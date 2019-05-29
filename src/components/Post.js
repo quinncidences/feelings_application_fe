@@ -10,7 +10,9 @@ class Post extends React.Component {
       posts: this.props.posts,
       current_index: this.props.posts.length - 1,
       current_post: null,
-      user: localStorage.getItem("jwt")
+      user: localStorage.getItem("jwt"),
+      clap_status: null,
+      current_claps: {user_id: 5, post_id: 3}
     }
     this.getCurrentPost = this.getCurrentPost.bind(this)
     this.clapClick = this.clapClick.bind(this)
@@ -27,8 +29,30 @@ class Post extends React.Component {
     let posts = this.props.posts
     let length = this.props.posts.length - 1
     let current_post = posts[length]
-    this.setState({current_post: current_post})
+    this.setState({
+      current_post: current_post,
+      current_claps: current_post.claps
+    })
+    this.getClapStatus()
   }
+
+  getClapStatus() {
+    debugger
+    if (this.state.current_claps.length > 0) {
+      this.state.current_claps.map(clap => {
+        if (clap.user_id === this.state.user) {
+          return this.setState({
+            clap_status: ClapFilled
+          })
+        }
+      })
+    } else {
+      this.setState({
+        clap_status: ClapUnfilled
+      })
+    }
+  }
+
 
   createClap() {
     fetch('http://localhost:3000/claps', {
@@ -48,19 +72,25 @@ class Post extends React.Component {
     .then(r => console.log("CREATED CLAP: ", r))
   }
 
+  // deleteClap() {
+  //   fetch('http://localhost:3000/claps', {
+  //   method: 'DELETE'
+  // })
+  //   .then(r => r.json())
+  //   .then(r => console.log("DELETED CLAP: ", r))
+  // }
+
   clapClick() {
     let clap = document.getElementById("post-clap")
     if (clap.alt === "Unfilled Clap") {
       clap.src = ClapFilled
       clap.alt = "Filled Clap"
-      console.log("Filled Clap: ", clap.alt)
       this.createClap()
     }
-    // I NEED TO ADD IN THE DESTROY METHOD HERE
     // else {
     //   clap.src = ClapUnfilled
     //   clap.alt = "Unfilled Clap"
-    //   console.log("Unfilled Clap: ", clap.alt)
+    //   this.deleteClap()
     // }
   }
 
@@ -69,14 +99,18 @@ class Post extends React.Component {
       let newIndex = this.state.posts.length - 1
       this.setState({
         current_index: newIndex,
-        current_post: this.state.posts[newIndex]
+        current_post: this.state.posts[newIndex],
+        current_claps: this.state.posts[newIndex].claps
       })
+      this.getClapStatus()
     } else {
       let newIndex = this.state.current_index - 1
       this.setState({
         current_index: newIndex,
-        current_post: this.state.posts[newIndex]
+        current_post: this.state.posts[newIndex],
+        current_claps: this.state.posts[newIndex].claps
       })
+      this.getClapStatus()
     }
   }
   backPost() {
@@ -84,14 +118,18 @@ class Post extends React.Component {
       let newIndex = 0
       this.setState({
         current_index: newIndex,
-        current_post: this.state.posts[newIndex]
+        current_post: this.state.posts[newIndex],
+        current_claps: this.state.posts[newIndex].claps
       })
+      this.getClapStatus()
     } else {
       let newIndex = this.state.current_index + 1
       this.setState({
         current_index: newIndex,
-        current_post: this.state.posts[newIndex]
+        current_post: this.state.posts[newIndex],
+        current_claps: this.state.posts[newIndex].claps
       })
+      this.getClapStatus()
     }
   }
 
@@ -117,7 +155,7 @@ class Post extends React.Component {
           <p>{this.state.current_post.created_at}</p>
         </div>
         <div className="clap-image">
-          <img id="post-clap" src={ClapUnfilled} alt="Unfilled Clap" onClick={() => this.clapClick()}/>
+          <img id="post-clap" src={this.state.clap_status} alt="Unfilled Clap" onClick={() => this.clapClick()}/>
         </div>
       </div>
     )
