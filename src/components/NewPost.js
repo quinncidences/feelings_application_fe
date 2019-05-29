@@ -39,8 +39,10 @@ class Post extends React.Component {
   render() {
     console.log(this.state.user)
   return (
+    <div>
+    <a href="http://localhost:3001/main">Dashboard</a><br></br>
+    <p>Current User: {this.state.user}</p>
       <div className="new-post-container">
-        <p>Current User: {this.state.user}</p>
         <form id="new-post-form" onSubmit={(ev) => this.newPostSubmit(ev)}>
           <div>
             <textarea name="content" rows="20" cols="50" placeholder="Enter feelings here..."></textarea>
@@ -48,6 +50,7 @@ class Post extends React.Component {
           <input type="submit" value="Add Feeling" />
         </form>
       </div>
+    </div>
   )}
 }
 

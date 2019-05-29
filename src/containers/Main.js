@@ -13,6 +13,7 @@ class Main extends React.Component {
     }
     this.fetchPosts = this.fetchPosts.bind(this)
     this.addFeeling = this.addFeeling.bind(this)
+    this.logOut = this.logOut.bind(this)
   }
 
   componentWillMount() {
@@ -33,12 +34,20 @@ class Main extends React.Component {
     window.location.href = 'http://localhost:3001/newpost'
   }
 
+  logOut(ev) {
+    ev.preventDefault()
+    console.log("Logged OUTTTT")
+    localStorage.clear();
+    window.location.href = 'http://localhost:3001/login'
+  }
+
   render() {
     if (!this.state.posts) {
       return <div />
     }
     return (
       <div>
+        <button onClick={(ev)=>this.logOut(ev)}>Logout</button>
         <p>Current User ID: {this.state.user}</p>
         <div id="add-post-button">
           <button type="button" onClick={() => this.addFeeling()}>Add Your Feelings</button>
