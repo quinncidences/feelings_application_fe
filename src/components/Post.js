@@ -150,6 +150,19 @@ class Post extends React.Component {
       console.log("MATCH", this.state.user)
       console.log("MATCH", this.state.current_post.user)
       console.log("MATCH", this.state.current_post)
+      fetch('http://localhost:3000/posts/1', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          post: {
+            "id": this.state.current_post.id,
+          }
+        })
+      })
+        .then(r => console.log("DELETED POST: ", r))
     } else {
       console.log("NO MATCH", this.state.user)
       console.log("NO MATCH", this.state.current_post.user)
