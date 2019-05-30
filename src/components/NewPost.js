@@ -31,6 +31,11 @@ class Post extends React.Component {
     .then(r => r.json())
     .then(r => console.log("CREATED POST"))
     .then(form.reset())
+    .then(() => this.redirectMain())
+  }
+
+  redirectMain() {
+    window.location.href = 'http://localhost:3001/main'
   }
 
 
@@ -39,15 +44,18 @@ class Post extends React.Component {
   render() {
     console.log(this.state.user)
   return (
+    <div>
+    <a className="button" href="http://localhost:3001/main">Dashboard</a><br></br>
+    <p>Current User: {this.state.user}</p>
       <div className="new-post-container">
-        <p>Current User: {this.state.user}</p>
         <form id="new-post-form" onSubmit={(ev) => this.newPostSubmit(ev)}>
           <div>
             <textarea name="content" rows="20" cols="50" placeholder="Enter feelings here..."></textarea>
           </div>
-          <input type="submit" value="Add Feeling" />
+          <input className="button" type="submit" value="Add Feeling" />
         </form>
       </div>
+    </div>
   )}
 }
 

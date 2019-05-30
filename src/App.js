@@ -7,23 +7,15 @@ import Login from './components/Login'
 import NewAccount from './components/NewAccount'
 import NewPost from './components/NewPost'
 import Main from './containers/Main'
+import Logo from '/Users/quinncox/Flatiron/feelings_fe/src/feelings-logo.png';
 
 class App extends React.Component {
-
-
-  logOut(ev) {
-    ev.preventDefault()
-    console.log("Logged OUTTTT")
-    localStorage.clear();
-    window.location.href = 'http://localhost:3001/login'
-  }
 
   render() {
   return (
     <div>
       <header>
-        <p>HOME PAGE</p>
-        <button onClick={(ev)=>this.logOut(ev)}>Logout</button>
+        <img src={Logo} alt="logo"/>
         <Router>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />

@@ -9,50 +9,37 @@ class Post extends React.Component {
     this.state = {
       posts: this.props.posts,
       current_index: this.props.posts.length - 1,
-      current_post: null,
+      current_post: this.props.posts[(this.props.posts.length - 1)],
       user: localStorage.getItem("jwt"),
       clap_status: null,
-      current_claps: {user_id: 5, post_id: 3}
+      current_claps: this.props.posts[(this.props.posts.length - 1)].claps,
     }
-    this.getCurrentPost = this.getCurrentPost.bind(this)
-    this.clapClick = this.clapClick.bind(this)
+    this.actionClap = this.actionClap.bind(this)
+    this.deleteClap = this.deleteClap.bind(this)
+    this.createClap = this.createClap.bind(this)
     this.backPost = this.backPost.bind(this)
     this.nextPost = this.nextPost.bind(this)
-    // this.createClap = this.createClap.bind(this)
   }
 
   componentWillMount() {
-    this.getCurrentPost()
-  }
-
-  getCurrentPost() {
-    let posts = this.props.posts
-    let length = this.props.posts.length - 1
-    let current_post = posts[length]
-    this.setState({
-      current_post: current_post,
-      current_claps: current_post.claps
-    })
     this.getClapStatus()
   }
 
   getClapStatus() {
-    debugger
-    if (this.state.current_claps.length > 0) {
-      this.state.current_claps.map(clap => {
-        if (clap.user_id === this.state.user) {
-          return this.setState({
-            clap_status: ClapFilled
-          })
+    let clapKeys = Object.keys(this.state.current_claps).length
+    if (clapKeys > 0) {
+      for (let i = 0; i < clapKeys; i++) {
+        if (this.state.current_claps[i].user_id == this.state.user) {
+          this.setState({clap_status: ClapFilled});
+          break;
+        } else {
+          this.setState({clap_status: ClapUnfilled})
         }
-      })
+      }
     } else {
-      this.setState({
-        clap_status: ClapUnfilled
-      })
+      this.setState({clap_status: ClapUnfilled})
     }
   }
-
 
   createClap() {
     fetch('http://localhost:3000/claps', {
@@ -68,31 +55,45 @@ class Post extends React.Component {
       }
     })
   })
-    .then(r => r.json())
     .then(r => console.log("CREATED CLAP: ", r))
   }
 
-  // deleteClap() {
-  //   fetch('http://localhost:3000/claps', {
-  //   method: 'DELETE'
-  // })
-  //   .then(r => r.json())
-  //   .then(r => console.log("DELETED CLAP: ", r))
-  // }
-
-  clapClick() {
-    let clap = document.getElementById("post-clap")
-    if (clap.alt === "Unfilled Clap") {
-      clap.src = ClapFilled
-      clap.alt = "Filled Clap"
-      this.createClap()
-    }
-    // else {
-    //   clap.src = ClapUnfilled
-    //   clap.alt = "Unfilled Clap"
-    //   this.deleteClap()
-    // }
+  deleteClap() {
+    fetch('http://localhost:3000/claps/1', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      clap: {
+        "user_id": this.state.user,
+        "post_id": this.state.current_post.id,
+      }
+    })
+  })
+    .then(r => console.log("DELETED CLAP: ", r))
   }
+
+  actionClap() {
+   let clapKeys = Object.keys(this.state.current_claps).length
+   if (clapKeys === 0) {
+     this.setState({clap_status: ClapFilled}, () => this.createClap())
+   } else {
+     let hasUserClapped = false
+     for (let i = 0; i < clapKeys; i++) {
+       if (this.state.current_claps[i].user_id == this.state.user) {
+         this.setState({clap_status: ClapUnfilled}, () => this.deleteClap())
+         hasUserClapped = true
+         break;
+       }
+     }
+
+     if (!hasUserClapped) {
+       this.setState({clap_status: ClapFilled}, () => this.createClap())
+     }
+   }
+ }
 
   nextPost() {
     if (this.state.current_index === 0) {
@@ -101,18 +102,17 @@ class Post extends React.Component {
         current_index: newIndex,
         current_post: this.state.posts[newIndex],
         current_claps: this.state.posts[newIndex].claps
-      })
-      this.getClapStatus()
+      }, () => this.getClapStatus())
     } else {
       let newIndex = this.state.current_index - 1
       this.setState({
         current_index: newIndex,
         current_post: this.state.posts[newIndex],
         current_claps: this.state.posts[newIndex].claps
-      })
-      this.getClapStatus()
+      }, () => this.getClapStatus())
     }
   }
+
   backPost() {
     if (this.state.current_index === this.state.posts.length - 1) {
       let newIndex = 0
@@ -120,17 +120,27 @@ class Post extends React.Component {
         current_index: newIndex,
         current_post: this.state.posts[newIndex],
         current_claps: this.state.posts[newIndex].claps
-      })
-      this.getClapStatus()
+      }, () => this.getClapStatus())
     } else {
       let newIndex = this.state.current_index + 1
       this.setState({
         current_index: newIndex,
         current_post: this.state.posts[newIndex],
         current_claps: this.state.posts[newIndex].claps
-      })
-      this.getClapStatus()
+      }, () => this.getClapStatus())
     }
+  }
+
+  convertDate(d) {
+    let monthNames = [
+      "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
+    let parsed = Date.parse(d)
+    let month = new Date(parsed).getMonth()
+    let date = new Date(parsed).getDate()
+    let year = new Date(parsed).getFullYear()
+    let monthDateYear  = monthNames[month] + " " + date + ", " + year;
+    return monthDateYear
   }
 
   render() {
@@ -140,22 +150,23 @@ class Post extends React.Component {
     return (
       <div>
         <div className="post-buttons">
-          <div id="back-post" onClick={() => this.backPost()}>
-            <h2>BACK</h2>
-          </div>
-          <div id="next-post" onClick={() => this.nextPost()}>
-            <h2>NEXT</h2>
+          <div >
+            <span id="back-post" onClick={() => this.backPost()}>BACK</span>
+            <span id="next-post" onClick={() => this.nextPost()}>NEXT</span>
           </div>
         </div>
         <div className="post-container">
-          <p>{this.state.current_post.user.first_name} {this.state.current_post.user.last_name}</p>
-          <p>{this.state.current_post.user.city}</p>
-          <p>{this.state.current_post.user.course}</p>
-          <p>{this.state.current_post.content}</p>
-          <p>{this.state.current_post.created_at}</p>
+          <div className="post-header">
+            <p>By: {this.state.current_post.user.first_name} {this.state.current_post.user.last_name}</p>
+            <p>{this.state.current_post.user.course} ({this.state.current_post.user.city})</p>
+            <p>{this.convertDate(this.state.current_post.created_at)}</p>
+          </div>
+          <div className="post-content">
+            <p>{this.state.current_post.content}</p>
+          </div>
         </div>
-        <div className="clap-image">
-          <img id="post-clap" src={this.state.clap_status} alt="Unfilled Clap" onClick={() => this.clapClick()}/>
+        <div className="clap">
+          <img id="post-clap" src={this.state.clap_status} alt="clap" onClick={() => this.actionClap()} height="42" width="42"/>
         </div>
       </div>
     )
