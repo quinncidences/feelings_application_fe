@@ -47,10 +47,10 @@ class Main extends React.Component {
     }
     return (
       <div>
-        <button onClick={(ev)=>this.logOut(ev)}>Logout</button>
+        <button className="button" onClick={(ev)=>this.logOut(ev)}>Logout</button>
         <p>Current User ID: {this.state.user}</p>
         <div id="add-post-button">
-          <button type="button" onClick={() => this.addFeeling()}>Add Your Feelings</button>
+          <button className="button" type="button" onClick={() => this.addFeeling()}>Add Your Feelings</button>
         </div>
         <Post posts={this.state.posts} />
       </div>

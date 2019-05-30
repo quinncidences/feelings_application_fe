@@ -7,6 +7,7 @@ import Login from './components/Login'
 import NewAccount from './components/NewAccount'
 import NewPost from './components/NewPost'
 import Main from './containers/Main'
+import Logo from '/Users/quinncox/Flatiron/feelings_fe/src/feelings-logo.png';
 
 class App extends React.Component {
 
@@ -14,7 +15,7 @@ class App extends React.Component {
   return (
     <div>
       <header>
-        <p>FEELINGS</p>
+        <img src={Logo} alt="logo"/>
         <Router>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
