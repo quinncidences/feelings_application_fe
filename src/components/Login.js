@@ -9,10 +9,6 @@ class Login extends React.Component {
 
   loginSubmit(ev) {
     ev.preventDefault()
-
-    console.log("username: ", ev.target.elements.username.value)
-    console.log("password:", ev.target.elements.password.value)
-
     fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: {

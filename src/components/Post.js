@@ -14,11 +14,6 @@ class Post extends React.Component {
       clap_status: null,
       current_claps: this.props.posts[(this.props.posts.length - 1)].claps,
     }
-    this.actionClap = this.actionClap.bind(this)
-    this.deleteClap = this.deleteClap.bind(this)
-    this.createClap = this.createClap.bind(this)
-    this.backPost = this.backPost.bind(this)
-    this.nextPost = this.nextPost.bind(this)
   }
 
   componentWillMount() {
@@ -147,9 +142,6 @@ class Post extends React.Component {
 
   deletePost() {
     if (this.state.user == this.state.current_post.user_id) {
-      console.log("MATCH", this.state.user)
-      console.log("MATCH", this.state.current_post.user)
-      console.log("MATCH", this.state.current_post)
       fetch('http://localhost:3000/posts/1', {
         method: 'DELETE',
         headers: {
@@ -163,10 +155,9 @@ class Post extends React.Component {
         })
       })
         .then(r => console.log("DELETED POST: ", r))
+        .then(() => this.nextPost())
     } else {
-      console.log("NO MATCH", this.state.user)
-      console.log("NO MATCH", this.state.current_post.user)
-      console.log("NO MATCH", this.state.current_post)
+      console.log("NO MATCH")
     }
   }
 
@@ -176,11 +167,10 @@ class Post extends React.Component {
     }
     return (
       <div>
-        {this.state.current_post.user_id}<br></br>
-        {this.state.user}
         <div className="post-buttons">
           <div >
             <span id="back-post" onClick={() => this.backPost()}>BACK</span>
+            {this.state.user != null && <span className="clap"><img id="post-clap" src={this.state.clap_status} alt="clap" onClick={() => this.actionClap()} height="42" width="42"/></span>}
             <span id="next-post" onClick={() => this.nextPost()}>NEXT</span>
           </div>
         </div>
@@ -190,14 +180,11 @@ class Post extends React.Component {
             <p>{this.state.current_post.user.course} ({this.state.current_post.user.city})</p>
             <p>{this.convertDate(this.state.current_post.created_at)}</p>
           </div>
-          <button id="delete-button" className="del-btn" type="button" onClick={() => this.deletePost()}>Delete</button>
-          <div className="post-content">
-            <p>{this.state.current_post.content}</p>
+          <div className="post-content-container">
+            <p className="post-content">{this.state.current_post.content}</p>
           </div>
         </div>
-        <div className="clap">
-          <img id="post-clap" src={this.state.clap_status} alt="clap" onClick={() => this.actionClap()} height="42" width="42"/>
-        </div>
+        {this.state.user == this.state.current_post.user_id && <button id="delete-button" className="del-btn" type="button" onClick={() => this.deletePost()}>Delete</button>}
       </div>
     )
   }

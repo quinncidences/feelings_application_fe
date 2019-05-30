@@ -42,14 +42,10 @@ class Main extends React.Component {
 
   actionButtonText() {
     const button = document.getElementById("user-register")
-    const feelbutton = document.getElementById('feel-button')
     if (this.state.user === null) {
       button.textContent = "Sign In"
-      feelbutton.textContent = "Login to Add a Feeling"
     } else {
       button.textContent = "Logout"
-      feelbutton.textContent = "Add a Feeling"
-
     }
   }
 
@@ -69,9 +65,8 @@ class Main extends React.Component {
     return (
       <div id="main-div">
         <button id="user-register" className="button" onClick={()=>this.actionButtonFunction()}>Logout</button>
-        <p>Current User ID: {this.state.user}</p>
-        <div id="add-post-button">
-          <button id="feel-button" className="button" type="button" onClick={() => this.feelingButton()}>Add Your Feelings</button>
+        <div id="add-post-button"><br></br><br></br><br></br>
+          {this.state.user != null && <button className="button" type="button" onClick={() => this.feelingButton()}>Add A Feeling</button>}
         </div>
         <Post posts={this.state.posts} />
       </div>

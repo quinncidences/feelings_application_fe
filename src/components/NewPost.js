@@ -38,9 +38,6 @@ class Post extends React.Component {
     window.location.href = 'http://localhost:3001/main'
   }
 
-
-
-
   render() {
     console.log(this.state.user)
   return (
