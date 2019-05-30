@@ -28,7 +28,6 @@ class Login extends React.Component {
     })
     .then(res => res.json())
     .then(res => localStorage.setItem("jwt", res.user.id))
-    .then(form.reset())
     .then(() => this.redirectMain())
   }
 
