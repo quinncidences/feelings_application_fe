@@ -9,7 +9,6 @@ class Login extends React.Component {
 
   loginSubmit(ev) {
     ev.preventDefault()
-    let form = document.getElementById("login-form")
 
     console.log("username: ", ev.target.elements.username.value)
     console.log("password:", ev.target.elements.password.value)

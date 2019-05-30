@@ -114,6 +114,8 @@ class Post extends React.Component {
   }
 
   backPost() {
+    console.log(this.state.current_post)
+    console.log(this.state.user)
     if (this.state.current_index === this.state.posts.length - 1) {
       let newIndex = 0
       this.setState({
@@ -143,12 +145,26 @@ class Post extends React.Component {
     return monthDateYear
   }
 
+  deletePost() {
+    if (this.state.user == this.state.current_post.user_id) {
+      console.log("MATCH", this.state.user)
+      console.log("MATCH", this.state.current_post.user)
+      console.log("MATCH", this.state.current_post)
+    } else {
+      console.log("NO MATCH", this.state.user)
+      console.log("NO MATCH", this.state.current_post.user)
+      console.log("NO MATCH", this.state.current_post)
+    }
+  }
+
   render() {
     if (!this.state.current_post) {
       return <div />
     }
     return (
       <div>
+        {this.state.current_post.user_id}<br></br>
+        {this.state.user}
         <div className="post-buttons">
           <div >
             <span id="back-post" onClick={() => this.backPost()}>BACK</span>
@@ -157,10 +173,11 @@ class Post extends React.Component {
         </div>
         <div className="post-container">
           <div className="post-header">
-            <p>By: {this.state.current_post.user.first_name} {this.state.current_post.user.last_name}</p>
+            <p>By: {this.state.current_post.user.username}</p>
             <p>{this.state.current_post.user.course} ({this.state.current_post.user.city})</p>
             <p>{this.convertDate(this.state.current_post.created_at)}</p>
           </div>
+          <button id="delete-button" className="del-btn" type="button" onClick={() => this.deletePost()}>Delete</button>
           <div className="post-content">
             <p>{this.state.current_post.content}</p>
           </div>
